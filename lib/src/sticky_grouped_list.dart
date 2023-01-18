@@ -128,6 +128,12 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
   /// cache extent.
   final double? minCacheExtent;
 
+  /// Whether the [elements] will be sorted or not. If not it must be done
+  /// manually.
+  ///
+  /// Defauts to `true`.
+  final bool sort;
+
   /// The number of children that will contribute semantic information.
   ///
   /// See [ScrollView.semanticChildCount] for more information.
@@ -170,6 +176,7 @@ class StickyGroupedListView<T, E> extends StatefulWidget {
     this.initialAlignment = 0,
     this.initialScrollIndex = 0,
     this.shrinkWrap = false,
+    this.sort = false,
   }) : assert(itemBuilder != null || indexedItemBuilder != null);
 
   @override
@@ -334,8 +341,8 @@ class StickyGroupedListViewState<T, E> extends State<StickyGroupedListView<T, E>
   }
 
   List<T> _sortElements() {
-    List<T> elements = widget.elements;
-    if (elements.isNotEmpty) {
+    List<T> elements = List.of(widget.elements);
+    if (widget.sort && elements.isNotEmpty) {
       elements.sort((e1, e2) {
         int? compareResult;
         // compare groups
