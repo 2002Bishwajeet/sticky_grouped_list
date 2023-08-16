@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 final List _elements = [
@@ -16,7 +15,7 @@ void main() {
     return Text(element['group']);
   }
 
-  testWidgets('find elemets and group separators', (WidgetTester tester) async {
+  testWidgets('find elements and group separators', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -53,8 +52,7 @@ void main() {
     );
   });
 
-  testWidgets('finds only one group separator per group',
-      (WidgetTester tester) async {
+  testWidgets('finds only one group separator per group', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -67,6 +65,6 @@ void main() {
         ),
       ),
     );
-    expect(find.text("Team B"), findsOneWidget);
+    expect(find.text('Team B'), findsOneWidget);
   });
 }
