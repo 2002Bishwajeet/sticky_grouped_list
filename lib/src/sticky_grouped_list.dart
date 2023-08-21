@@ -334,36 +334,38 @@ class StickyGroupedListViewState<T, E> extends State<StickyGroupedListView<T, E>
       return current.itemTrailingEdge < pos.itemTrailingEdge ? current : pos;
     }
 
-    ItemPosition currentItem = _listener.itemPositions.value
-        .where(
-            (ItemPosition position) => !_isSeparator!(position.index) && position.itemTrailingEdge > headerDimension!)
-        .reduce(reducePositions);
+    final group = _listener.itemPositions.value.where(
+        (ItemPosition position) => !_isSeparator!(position.index) && position.itemTrailingEdge > headerDimension!);
 
-    int index = currentItem.index ~/ 2;
-    if (_topElementIndex != index) {
-      if (_topElementIndex < sortedElements.length) {
-        E curr = widget.groupBy(sortedElements[index]);
-        E prev = widget.groupBy(sortedElements[_topElementIndex]);
-        if (prev != curr) {
+    if (group.isNotEmpty) {
+      ItemPosition currentItem = group.reduce(reducePositions);
+
+      int index = currentItem.index ~/ 2;
+      if (_topElementIndex != index) {
+        if (_topElementIndex < sortedElements.length) {
+          E curr = widget.groupBy(sortedElements[index]);
+          E prev = widget.groupBy(sortedElements[_topElementIndex]);
+          if (prev != curr) {
+            _topElementIndex = index;
+            _streamController.add(_topElementIndex);
+            if (widget.currentTopIndex != null) {
+              widget.currentTopIndex!(_topElementIndex, sortedElements[index]);
+            }
+          }
+        } else {
           _topElementIndex = index;
           _streamController.add(_topElementIndex);
           if (widget.currentTopIndex != null) {
             widget.currentTopIndex!(_topElementIndex, sortedElements[index]);
           }
         }
-      } else {
-        _topElementIndex = index;
-        _streamController.add(_topElementIndex);
-        if (widget.currentTopIndex != null) {
-          widget.currentTopIndex!(_topElementIndex, sortedElements[index]);
-        }
+        // E curr = widget.groupBy(sortedElements[index]);
+        // E prev = widget.groupBy(sortedElements[_topElementIndex]);
+        // if (prev != curr) {
+        //   _topElementIndex = index;
+        //   _streamController.add(_topElementIndex);
+        // }
       }
-      // E curr = widget.groupBy(sortedElements[index]);
-      // E prev = widget.groupBy(sortedElements[_topElementIndex]);
-      // if (prev != curr) {
-      //   _topElementIndex = index;
-      //   _streamController.add(_topElementIndex);
-      // }
     }
   }
 
