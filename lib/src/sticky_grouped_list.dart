@@ -230,6 +230,12 @@ class StickyGroupedListViewState<T, E> extends State<StickyGroupedListView<T, E>
   }
 
   @override
+  void activate() {
+    _controller._attach(this);
+    super.activate();
+  }
+
+  @override
   void didUpdateWidget(StickyGroupedListView<T, E> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.itemScrollController?._stickyGroupedListViewState == this) {
